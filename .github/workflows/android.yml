@@ -17,24 +17,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      # Installiamo Gradle "base" solo per generare il wrapper
-      - name: Install Gradle (temporary)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gradle
-
-      # Genera il wrapper con una versione precisa e stabile
-      - name: Generate Gradle Wrapper
-        run: |
-          gradle wrapper --gradle-version 8.2 --distribution-type all
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
 
       - name: Build Debug APK
-        run: |
-          chmod +x ./gradlew
-          ./gradlew assembleDebug
+        run: gradle assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
